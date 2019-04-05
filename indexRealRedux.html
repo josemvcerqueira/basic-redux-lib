@@ -91,12 +91,28 @@ function removeGoalAction(id) {
 		id
 	};
 }
+
+// Middleware
+
+const checker = store => next => action => {
+	if (action.type === ADD_TODO && action.todo.name.toLowerCase().includes("bitcoin")) {
+		return alert("this is not a very good idea")
+	}
+
+	if (action.type === ADD_GOAL && action.goal.name.toLowerCase().includes("bitcoin")) {
+		return alert("this is not a very good idea")
+	}
+
+	return next(action)
+
+}
+
 // App Code
 
 const store = Redux.createStore(Redux.combineReducers({
 	todos,
 	goals
-}))
+}), Redux.applyMiddleware(checker))
 
 store.subscribe(() => {
 	const {goals, todos} = store.getState();
